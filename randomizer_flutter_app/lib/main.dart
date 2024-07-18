@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
 class PracticeMain extends StatefulWidget {
@@ -23,55 +24,71 @@ class _PracticeMainState extends State<PracticeMain> {
     });
   }
 
-  void _changeRadius(){
-    setState((){
+  void _changeRadius() {
+    setState(() {
       _borderRadius = BorderRadius.circular(random.nextInt(80).toDouble());
-      
     });
   }
 
-  void _changeBoxColor(){
+  void _changeBoxColor() {
     setState(() {
       boxColor = Color.fromRGBO(
-        random.nextInt(256), random.nextInt(256), random.nextInt(256), 1);
+          random.nextInt(256), random.nextInt(256), random.nextInt(256), 1);
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
-      body: Center(
-        child: GestureDetector(
-          onTap: changeBoxSize,
-          child: AnimatedContainer(
-            duration: const Duration(seconds: 1),
-            curve: Curves.fastOutSlowIn,
-            width: boxWidth,
-            height: boxHeight,
-            decoration: BoxDecoration(
-              color: boxColor,
-              borderRadius: _borderRadius,
+      body: Stack(
+        children: [
+          Center(
+            child: GestureDetector(
+              onTap: changeBoxSize,
+              child: AnimatedContainer(
+                duration: const Duration(seconds: 1),
+                curve: Curves.fastOutSlowIn,
+                width: boxWidth,
+                height: boxHeight,
+                decoration: BoxDecoration(
+                  color: boxColor,
+                  borderRadius: _borderRadius,
+                ),
+              ),
             ),
           ),
-        ),
+          Positioned(
+            top: 25,
+            right: 15,
+            child: buildWavyAnimation(),
+          ),
+        ],
       ),
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          IconButton(onPressed: _changeBoxColor,
-           icon: const Icon(Icons.pallet)
-           ),
-          IconButton(onPressed: _changeRadius,
-           icon: const Icon(Icons.interests)),
-          IconButton(onPressed: changeBoxSize,
-           icon: const Icon(Icons.aspect_ratio))
-          
-
+          IconButton(
+              onPressed: _changeBoxColor, icon: const Icon(Icons.palette)),
+          IconButton(onPressed: _changeRadius, icon: const Icon(Icons.interests)),
+          IconButton(onPressed: changeBoxSize, icon: const Icon(Icons.aspect_ratio)),
         ],
       ),
     );
   }
+  
+  Widget buildWavyAnimation() => Center(
+    child: AnimatedTextKit(
+      animatedTexts: [WavyAnimatedText("DanNavs", textStyle: TextStyle(
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
+        color: Colors.grey
+         ))],
+      repeatForever: true,
+    ),
+
+  );
 }
 
 void main() {
